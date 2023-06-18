@@ -15,7 +15,7 @@ int main() {
         cout << "===== Sistema de Eleição =====" << endl;
         cout << "1 - Cadastro de candidatos" << endl;
         cout << "2 - Listar candidatos" << endl;
-        cout << "3 - Salvar candidatos" << endl;
+        cout << "3 - Inserir eleitor apto" << endl;
         cout << "4 - Carregar candidatos" << endl;
         cout << "5 - Cadastro de eleitores aptos" << endl;
         cout << "6 - Verificar eleitor apto" << endl;
@@ -28,17 +28,28 @@ int main() {
             	carregarCandidatos();
                 inserirCandidato();
                 salvarCandidatos();
+                liberarMemoriaCandidatos();
+                //Limpeza de memoria
                 break;
-            case 2:
-            	salvarCandidatos();
+            case 2:            	
             	carregarCandidatos();
                 listarCandidatos();
                 break;
             case 3:
-                salvarCandidatos();
+            	carregarEleitor();
+                inserirEleitorApto();
+                salvarEleitores();
                 break;
             case 4:
-                carregarCandidatos();
+                int numeroTitulo;
+                cout << "Digite o número do título de eleitor: ";
+                cin >> numeroTitulo;
+                if (verificarEleitorApto(numeroTitulo)) {
+                    cout << "Eleitor apto para votar." << endl;
+                } else {
+                    cout << "Eleitor não apto para votar." << endl;
+                }
+                break;
                 break;
             case 5:
                 inserirEleitorApto();
