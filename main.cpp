@@ -16,9 +16,9 @@ int main() {
         cout << "1 - Cadastro de candidatos" << endl;
         cout << "2 - Listar candidatos" << endl;
         cout << "3 - Inserir eleitor apto" << endl;
-        cout << "4 - Carregar candidatos" << endl;
-        cout << "5 - Cadastro de eleitores aptos" << endl;
-        cout << "6 - Verificar eleitor apto" << endl;
+        cout << "4 - Inicio da votação" << endl;
+        cout << "5 - Relatorio Votacao" << endl;
+        cout << "6 - ------------" << endl;
         cout << "0 - Sair" << endl;
         cout << "Escolha uma opção: ";
         cin >> opcao;
@@ -28,8 +28,7 @@ int main() {
             	carregarCandidatos();
                 inserirCandidato();
                 salvarCandidatos();
-                liberarMemoriaCandidatos();
-                //Limpeza de memoria
+                //liberarMemoriaCandidatos();
                 break;
             case 2:            	
             	carregarCandidatos();
@@ -41,29 +40,25 @@ int main() {
                 salvarEleitores();
                 break;
             case 4:
+            	carregarEleitor();
                 int numeroTitulo;
                 cout << "Digite o número do título de eleitor: ";
                 cin >> numeroTitulo;
                 if (verificarEleitorApto(numeroTitulo)) {
-                    cout << "Eleitor apto para votar." << endl;
+                	
+                    //cout << "Eleitor apto para votar." << endl;
                 } else {
                     cout << "Eleitor não apto para votar." << endl;
                 }
-                break;
-                break;
+                break;               
             case 5:
-                inserirEleitorApto();
+                votacao();
+                salvarEleitores();
+                exibirVotosRegistrados();
                 break;
             case 6:
-                int numeroTitulo;
-                cout << "Digite o número do título de eleitor: ";
-                cin >> numeroTitulo;
-                if (verificarEleitorApto(numeroTitulo)) {
-                    cout << "Eleitor apto para votar." << endl;
-                } else {
-                    cout << "Eleitor não apto para votar." << endl;
-                }
-                break;
+            	exibirVotos();
+            	break;
             case 0:
                 // Liberar a memória alocada pelos candidatos e eleitores aptos antes de sair
                 liberarMemoriaCandidatos();
@@ -79,4 +74,5 @@ int main() {
 
     return 0;
 }
+
 
