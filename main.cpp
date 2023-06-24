@@ -17,8 +17,7 @@ int main() {
         cout << "2 - Listar candidatos" << endl;
         cout << "3 - Inserir eleitor apto" << endl;
         cout << "4 - Inicio da votação" << endl;
-        cout << "5 - Relatorio Votacao" << endl;
-        cout << "6 - ------------" << endl;
+        cout << "5 - Relatorio quem ganhou a Votacao" << endl;
         cout << "0 - Sair" << endl;
         cout << "Escolha uma opção: ";
         cin >> opcao;
@@ -27,8 +26,7 @@ int main() {
             case 1:
             	carregarCandidatos();
                 inserirCandidato();
-                salvarCandidatos();
-                //liberarMemoriaCandidatos();
+                salvarCandidatos();        
                 break;
             case 2:            	
             	carregarCandidatos();
@@ -44,25 +42,12 @@ int main() {
                 int numeroTitulo;
                 cout << "Digite o número do título de eleitor: ";
                 cin >> numeroTitulo;
-                if (verificarEleitorApto(numeroTitulo)) {
-                	
-                    //cout << "Eleitor apto para votar." << endl;
-                } else {
-                    cout << "Eleitor não apto para votar." << endl;
-                }
-                break;               
+                votacao(numeroTitulo);  
+				resultado();            
             case 5:
-                votacao();
-                salvarEleitores();
                 exibirVotosRegistrados();
                 break;
-            case 6:
-            	exibirVotos();
-            	break;
             case 0:
-                // Liberar a memória alocada pelos candidatos e eleitores aptos antes de sair
-                liberarMemoriaCandidatos();
-                liberarMemoriaEleitoresAptos();
                 break;
             default:
                 cout << "Opção inválida." << endl;

@@ -57,6 +57,7 @@ void inserirCandidato()
     }
     else
     {
+    	//lista encadeada
         Candidato *atual = listaCandidatos;
         while (atual->proximo != 0)
         {
@@ -114,6 +115,73 @@ void salvarCandidatos()
     }
 }
 
+// Funcao para carregar os candidatos do arquivo
+void carregarEleitor()
+{
+	//if abre of feche
+    ifstream arquivo("eleitor.txt");
+    if (arquivo.is_open())
+    {
+        string nome;
+        int numeroTitulo;
+        // ler a linha inteira com os parametros e >> para separar em variaveis
+        while (arquivo >> nome >> numeroTitulo)
+        {
+        	//fila encadeada
+            Eleitor *novoEleitor = new Eleitor;
+            novoEleitor->nome = nome;
+            novoEleitor->numeroTitulo = numeroTitulo;
+            novoEleitor->proximo = NULL;
+
+            if (filaEleitores == NULL)
+            {
+                filaEleitores = novoEleitor;
+            }
+            else
+            {
+                Eleitor *atual = filaEleitores;
+                while (atual->proximo != NULL)
+                {
+                    atual = atual->proximo;
+                }
+                atual->proximo = novoEleitor;
+            }
+        }
+        arquivo.close();
+        cout << "Eleitores carregados com sucesso!" << endl;
+    }
+    else
+    {
+        cout << "Nao foi possivel abrir o arquivo." << endl;
+    }
+}
+
+// Funcao para inserir um eleitor apto na lista
+void inserirEleitorApto()
+{
+    Eleitor *novoEleitor = new Eleitor;
+    cout << "Nome do eleitor: ";
+    cin >> novoEleitor->nome;
+    cout << "Numero do titulo de eleitor: ";
+    cin >> novoEleitor->numeroTitulo;
+    novoEleitor->proximo = 0;
+
+    if (listaEleitoresAptos == 0)
+    {
+        listaEleitoresAptos = novoEleitor;
+    }
+    else
+    {
+        Eleitor *atual = listaEleitoresAptos;
+        while (atual->proximo != 0)
+        {
+            atual = atual->proximo;
+        }
+        atual->proximo = novoEleitor;
+    }
+
+    cout << "Eleitor cadastrado com sucesso!" << endl;
+}
 
 // Funcao para salvar os eleitores em arquivo
 void salvarEleitores()
@@ -135,6 +203,8 @@ void salvarEleitores()
         cout << "Nao foi possivel carregar os eleitores!" << endl;
     }
 }
+
+
 
 // Função para exibir os votos registrados
 void exibirVotosRegistrados() {
@@ -205,78 +275,16 @@ void liberarMemoriaCandidatos()
     }
 }
 
-// Funcao para inserir um eleitor apto na lista
-void inserirEleitorApto()
-{
-    Eleitor *novoEleitor = new Eleitor;
-    cout << "Nome do eleitor: ";
-    cin >> novoEleitor->nome;
-    cout << "Numero do titulo de eleitor: ";
-    cin >> novoEleitor->numeroTitulo;
-    novoEleitor->proximo = 0;
 
-    if (listaEleitoresAptos == 0)
-    {
-        listaEleitoresAptos = novoEleitor;
-    }
-    else
-    {
-        Eleitor *atual = listaEleitoresAptos;
-        while (atual->proximo != 0)
-        {
-            atual = atual->proximo;
-        }
-        atual->proximo = novoEleitor;
-    }
 
-    cout << "Eleitor cadastrado com sucesso!" << endl;
-}
 
-// Funcao para carregar os candidatos do arquivo
-void carregarEleitor()
-{
-    ifstream arquivo("eleitor.txt");
-    if (arquivo.is_open())
-    {
-        string nome;
-        int numeroTitulo;
-        // ler a linha inteira com os parametros e >> para separar em variaveis
-        while (arquivo >> nome >> numeroTitulo)
-        {
-            Eleitor *novoEleitor = new Eleitor;
-            novoEleitor->nome = nome;
-            novoEleitor->numeroTitulo = numeroTitulo;
-            novoEleitor->proximo = NULL;
-
-            if (filaEleitores == NULL)
-            {
-                filaEleitores = novoEleitor;
-            }
-            else
-            {
-                Eleitor *atual = filaEleitores;
-                while (atual->proximo != NULL)
-                {
-                    atual = atual->proximo;
-                }
-                atual->proximo = novoEleitor;
-            }
-        }
-        arquivo.close();
-        cout << "Eleitores carregados com sucesso!" << endl;
-    }
-    else
-    {
-        cout << "Nao foi possivel abrir o arquivo." << endl;
-    }
-}
 
 
 // Funcao para verificar se um eleitor estï¿½ apto para votar pelo nï¿½mero do tï¿½tulo
 bool verificarEleitorApto(int numeroTitulo)
 {
     Eleitor *atual = listaEleitoresAptos;
-    while (atual != 0)
+    while (atual != NULL)
     {
         if (atual->numeroTitulo == numeroTitulo)
         {
@@ -300,45 +308,40 @@ void liberarMemoriaEleitoresAptos()
 }
 
 //registrar voto ja conferido se true na conferencia
-void votacao() 
-{
-	int numeroTitulo;
-	int numeroCandidato;
-	cout << "Digite o numero do titulo de eleitor";
-	cin >> numeroTitulo;
-	
-	if (!verificarEleitorApto(numeroTitulo)) {
-                	cout << "Eleitor não apto para votar." << endl;
-                return; 	
-	}
-	
-	cout << "---------------------------------------------------";
-	cout << "*************** Lista de candidatos ***************";
-	cout << "---------------------------------------------------";
-	Candidato* atual = listaCandidatos;
-	
-	while(atual != NULL){
-		cout << "Digite o numero do candidato: ";
-		cin >> numeroCandidato;		
-	}
-	
-	Voto* novoVoto = new Voto;
-	novoVoto->numeroTitulo = numeroTitulo;
-	novoVoto->numeroCandidato = numeroCandidato;
-	novoVoto->proximo = NULL;
-	
-	if(listaVotos == NULL){
-		listaVotos = novoVoto;
-	}else{
-		Voto* atual = listaVotos;
-		while (atual->proximo != NULL){
-			atual = atual->proximo;
-		}
-		
-	}
-	atual = listaCandidatos;
-	
-	cout << "Voto efetuado com sucesso!";
+// Função para registrar um voto
+void votacao(int numeroTitulo) {
+    if (!verificarEleitorApto(numeroTitulo)) {
+        cout << "Eleitor nao apto para votar." << endl;
+        return;
+    }
+
+    if (listaCandidatos == NULL) {
+        cout << "Lista de candidatos vazia." << endl;
+        return;
+    }
+
+    cout << "Lista de candidatos:" << endl;
+    Candidato* atual = listaCandidatos;
+    while (atual != NULL) {
+        cout << "Numero: " << atual->numero << " | Nome: " << atual->nome << endl;
+        atual = atual->proximo;
+    }
+
+    int numeroCandidato;
+    cout << "Digite o numero do candidato desejado: ";
+    cin >> numeroCandidato;
+
+    atual = listaCandidatos;
+    while (atual != NULL) {
+        if (atual->numero == numeroCandidato) {
+            atual->numVotos++;
+            cout << "Voto registrado com sucesso." << endl;
+            return;
+        }
+        atual = atual->proximo;
+    }
+
+    cout << "Candidato nao encontrado." << endl;
 }
 
 
@@ -395,5 +398,24 @@ void exibirVotos() {
     }
 }
 
+void resultado() {
+    if (listaCandidatos == NULL) {
+        cout << "Lista de candidatos vazia." << endl;
+        return;
+    }
+    int totalVotos = 0;
+    Candidato* atual = listaCandidatos;
+    while (atual != NULL) {
+        totalVotos += atual->numVotos;
+        atual = atual->proximo;
+    }
+    cout << "Resultado da eleicao:" << endl;
+    atual = listaCandidatos;
+    while (atual != NULL) {
+        cout << "Numero: " << atual->numero << " | Nome: " << atual->nome << " | Votos: " << atual->numVotos << endl;
+        atual = atual->proximo;
+    }
+    cout << "Total de votos: " << totalVotos << endl;
+}
 
 // blablabla
